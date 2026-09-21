@@ -1,32 +1,221 @@
 const products = [
     {
         id: 1,
-        name: "Classic Sneakers",
-        price: 2499,
-        category: "Footwear",
-        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+        name: "Neem & Honey Soap",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+        price: 100,
+        originalPrice: 150,
+        discount: 33,
+        
+        ingredients:[
+            "Neem Extract",
+            "Honey",
+            "Multani Mitti",
+            "Coconut Oil",
+            "Jojoba Oil",
+            "Glycerin base",
+        ],
+
+        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+
+        weight: "100g",
+        fragrance:"Fresh Herbal",
+
+        skinType: [
+            "Normal",
+            "Oily",
+            "Combination",
+            "Dry"
+        ],
+
+        keyBenefits: [
+            "Deep Cleansing",
+            "Moisturizing",
+            "Soothing",
+            "Natural Ingredients",
+            "Suitable for regular use",
+        ],
+
+        howToUse: [ 
+            "Apply gently to create a rich lather.",
+            "Rinse thoroughly with water.",
+            "Wet the soap and skin."
+        ],
+
+        quantity: 1,
+        buynow: true,
+
+        faqs:[
+            {
+                question: "Is this soap suitable for daily use?",
+                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+            }
+        ]
     },
+
     {
         id: 2,
-        name: "Premium Watch",
-        price: 3999,
-        category: "Accessories",
-        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d"
-    },
-    {
-        id: 3,
-        name: "Leather Backpack",
-        price: 2999,
-        category: "Bags",
-        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62"
-    },
-    {
-        id: 4,
-        name: "Wireless Headphones",
-        price: 4499,
-        category: "Electronics",
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    }
-];
+        name: "Turmeric Soap",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+        price: 100,
+        originalPrice: 150,
+        discount: 33,
+        
+        ingredients:[
+            "Turmeric Extract",
+            "Neem Extract",
+            "Multani Mitti",
+            "Ubtan",
+            "Glycerin base"
+        ],
 
+        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+
+        weight: "100g",
+        fragrance:"Fresh Turemeric",
+
+        skinType: [
+            "Normal",
+            "Oily",
+            "Combination",
+            "Dry"
+        ],
+
+        keyBenefits: [
+            "Deep Cleansing",
+            "Moisturizing",
+            "Soothing",
+            "Natural Ingredients",
+            "Suitable for regular use",
+        ],
+
+        howToUse: [ 
+            "Apply gently to create a rich lather.",
+            "Rinse thoroughly with water.",
+            "Wet the soap and skin."
+        ],
+
+        quantity: 1,
+        buynow: true,
+
+        faqs:[
+            {
+                question: "Is this soap suitable for daily use?",
+                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+            }
+        ]
+    },
+
+     {
+        id: 3,
+        name: "Lavender Soap",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+        price: 100,
+        originalPrice: 150,
+        discount: 33,
+        
+        ingredients:[
+            "Lavender Extract",
+            "Honey",
+            "Vitamin E",
+            "Glycerin base"
+        ],
+
+        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+
+        weight: "100g",
+        fragrance:"Fresh Lavender",
+
+        skinType: [
+            "Normal",
+            "Oily",
+            "Combination",
+            "Dry"
+        ],
+
+        keyBenefits: [
+            "Deep Cleansing",
+            "Moisturizing",
+            "Soothing",
+            "Natural Ingredients",
+            "Suitable for regular use",
+        ],
+
+        howToUse: [ 
+            "Apply gently to create a rich lather.",
+            "Rinse thoroughly with water.",
+            "Wet the soap and skin."
+        ],
+
+        quantity: 1,
+        buynow: true,
+
+        faqs:[
+            {
+                question: "Is this soap suitable for daily use?",
+                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+            }
+        ]
+     },
+
+      {
+        id: 4,
+        name: "Detan Soap",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+        price: 233,
+        originalPrice: 150,
+        discount: 36,
+        
+        ingredients:[
+            "Beetroot Extract",
+            "Manjistha",
+            "Mulethi",
+            "Rice flour",
+            "Masoor dal",
+            "Ubtan",
+            "Coffee powder",
+            "Coconut oil",
+            "Vitamin E",
+            "Potato & Tomato Extracts",
+            "Goat milk base"
+        ],
+
+        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+
+        weight: "100g",
+        fragrance:"Fresh Detan",
+
+        skinType: [
+            "Normal",
+            "Oily",
+            "Combination",
+            "Dry"
+        ],
+
+        keyBenefits: [
+            "Tan Removal",
+            "Moisturizing",
+            "Soothing",
+            "Natural Ingredients",
+            "Suitable for regular use",
+        ],
+
+        howToUse: [ 
+            "Apply gently to create a rich lather.",
+            "Rinse thoroughly with water.",
+            "Wet the soap and skin."
+        ],
+
+        quantity: 1,
+        buynow: true,
+
+        faqs:[
+            {
+                question: "Is this soap suitable for daily use?",
+                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+            }
+        ]
+      }
+
+];
 export default products;
