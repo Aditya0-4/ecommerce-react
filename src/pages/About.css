@@ -1,0 +1,579 @@
+.about-page {
+    width: 100%;
+    overflow: hidden;
+    background: #faf9f5;
+    color: #20231f;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.about-hero {
+    min-height: 650px;
+    padding: 100px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            #dce9d3 0%,
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #f7f8f1,
+            #eef3e8
+        );
+}
+
+.about-hero-content {
+    max-width: 700px;
+}
+
+.about-tag,
+.section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #61715a;
+}
+
+.about-hero h1 {
+    margin: 20px 0;
+    font-size: clamp(50px, 7vw, 90px);
+    line-height: 0.98;
+    letter-spacing: -4px;
+}
+
+.about-hero h1 span {
+    color: #6c815f;
+}
+
+.about-hero p {
+    max-width: 580px;
+    margin: 25px 0 35px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #62675f;
+}
+
+.about-btn {
+    display: inline-block;
+    padding: 15px 26px;
+    border-radius: 40px;
+    background: #6c815f;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.about-btn:hover {
+    transform: translateY(-3px);
+    background: #526646;
+}
+
+
+/* =========================
+   HERO CARD
+========================= */
+
+.hero-card {
+    width: 320px;
+    min-height: 370px;
+    padding: 40px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    border-radius: 180px 180px 25px 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.8),
+            rgba(214, 225, 204, 0.9)
+        );
+
+    box-shadow: 0 30px 80px rgba(60, 75, 50, 0.12);
+}
+
+.hero-card-icon {
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: auto;
+
+    border-radius: 50%;
+
+    background: white;
+    color: #6c815f;
+
+    font-size: 30px;
+}
+
+.hero-card h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.hero-card p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #62675f;
+}
+
+
+/* =========================
+   INTRO SECTION
+========================= */
+
+.about-intro {
+    max-width: 900px;
+    margin: auto;
+    padding: 130px 30px;
+    text-align: center;
+}
+
+.about-intro h2,
+.section-heading h2,
+.process-text h2,
+.promise-box h2,
+.cta-content h2 {
+    margin: 18px 0 25px;
+    font-size: clamp(38px, 5vw, 62px);
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.about-intro p {
+    max-width: 760px;
+    margin: 20px auto;
+
+    color: #666b63;
+
+    font-size: 17px;
+    line-height: 1.9;
+}
+
+
+/* =========================
+   VALUES SECTION
+========================= */
+
+.values-section {
+    padding: 110px 8%;
+    background: #20251f;
+    color: white;
+}
+
+.section-heading {
+    max-width: 700px;
+    margin-bottom: 60px;
+}
+
+.values-section .section-label {
+    color: #b8c9aa;
+}
+
+.values-section h2 {
+    margin-bottom: 0;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.value-card {
+    min-height: 310px;
+    padding: 35px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    transition: 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.value-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 55px;
+
+    border-radius: 50%;
+
+    background: #dfead6;
+    color: #526646;
+
+    font-size: 22px;
+}
+
+.value-card h3 {
+    margin-bottom: 15px;
+    font-size: 21px;
+}
+
+.value-card p {
+    color: #b7bbb4;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+
+/* =========================
+   PRODUCTS SECTION
+========================= */
+
+.products-section {
+    padding: 130px 8%;
+}
+
+.center {
+    max-width: 750px;
+    margin: 0 auto 70px;
+    text-align: center;
+}
+
+.center p {
+    color: #6b7068;
+    line-height: 1.8;
+}
+
+.product-category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.category-card {
+    min-height: 320px;
+    padding: 45px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    border-radius: 28px;
+
+    position: relative;
+    overflow: hidden;
+
+    transition: 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-7px);
+}
+
+.category-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    right: -70px;
+    top: -70px;
+
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.soap {
+    background: #e7dcc7;
+}
+
+.shampoo {
+    background: #d9e4d1;
+}
+
+.cream {
+    background: #e8dfd4;
+}
+
+.cleaner {
+    background: #d5e2e7;
+}
+
+.category-number {
+    position: absolute;
+
+    top: 30px;
+    left: 35px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    color: #66705f;
+}
+
+.category-card h3 {
+    position: relative;
+
+    margin-bottom: 12px;
+
+    font-size: 30px;
+}
+
+.category-card p {
+    position: relative;
+
+    max-width: 480px;
+
+    margin: 0;
+
+    line-height: 1.7;
+
+    color: #5f645d;
+}
+
+
+/* =========================
+   PROCESS SECTION
+========================= */
+
+.process-section {
+    padding: 120px 8%;
+
+    display: grid;
+
+    grid-template-columns: 0.8fr 1.2fr;
+
+    gap: 100px;
+
+    background: #eef2e9;
+}
+
+.process-text p {
+    max-width: 480px;
+
+    color: #656a62;
+
+    line-height: 1.8;
+
+    font-size: 16px;
+}
+
+.process-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.process-item {
+    display: grid;
+
+    grid-template-columns: 70px 1fr;
+
+    gap: 25px;
+
+    padding: 30px 0;
+
+    border-bottom: 1px solid #ccd4c5;
+}
+
+.process-item > span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #718267;
+}
+
+.process-item h3 {
+    margin-bottom: 8px;
+    font-size: 22px;
+}
+
+.process-item p {
+    margin: 0;
+    color: #666b63;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   PROMISE SECTION
+========================= */
+
+.promise-section {
+    padding: 100px 8%;
+}
+
+.promise-box {
+    padding: 75px;
+
+    display: grid;
+
+    grid-template-columns: 90px 1fr;
+
+    gap: 30px;
+
+    border-radius: 30px;
+
+    background: #dce8d5;
+}
+
+.promise-icon {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: white;
+    color: #6c815f;
+
+    font-size: 28px;
+}
+
+.promise-box h2 {
+    font-size: clamp(36px, 4vw, 52px);
+}
+
+.promise-box p {
+    max-width: 650px;
+
+    color: #62685f;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   CTA SECTION
+========================= */
+
+.about-cta {
+    padding: 140px 8%;
+
+    text-align: center;
+
+    background: #f3eee5;
+}
+
+.cta-content {
+    max-width: 800px;
+    margin: auto;
+}
+
+.cta-content p {
+    max-width: 600px;
+
+    margin: 0 auto 35px;
+
+    color: #686c65;
+
+    line-height: 1.8;
+}
+
+.about-btn.dark {
+    background: #20251f;
+}
+
+.about-btn.dark:hover {
+    background: #000;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    .about-hero {
+        padding: 80px 6%;
+    }
+
+    .hero-card {
+        width: 270px;
+    }
+
+    .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .process-section {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .about-hero {
+        min-height: auto;
+        padding: 70px 6%;
+
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .about-hero h1 {
+        font-size: 52px;
+        letter-spacing: -2px;
+    }
+
+    .hero-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .about-intro {
+        padding: 90px 25px;
+    }
+
+    .values-section,
+    .products-section,
+    .process-section,
+    .promise-section,
+    .about-cta {
+        padding: 90px 6%;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .promise-box {
+        padding: 40px 30px;
+        grid-template-columns: 1fr;
+    }
+
+    .promise-box h2 {
+        font-size: 40px;
+    }
+
+    .process-item {
+        grid-template-columns: 45px 1fr;
+        gap: 15px;
+    }
+}

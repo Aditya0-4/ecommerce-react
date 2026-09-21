@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Contact from "./pages/Contacts";
+import About from "./pages/about";
 
 function App() {
 
@@ -35,6 +36,13 @@ function App() {
                         <ProductDetails
                             cart={cart}
                             setCart={setCart}
+                        />
+                    }
+                />
+                <Route
+                   path="/about"
+                        element={
+                        <About 
                         />
                     }
                 />
