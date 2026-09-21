@@ -27,8 +27,11 @@ h1 {
     overflow: hidden;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease;
-}
 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 .product-card:hover {
     transform: translateY(-8px);
 }
@@ -41,20 +44,38 @@ h1 {
 
 .product-info {
     padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .product-info p {
     color: #777;
     font-size: 14px;
+
+    height: 20px;
+    margin: 0 0 10px;
 }
 
 .product-info h3 {
     margin: 10px 0;
+
+    height: 48px;
+
+    display: flex;
+    align-items: center;
 }
+
 
 .product-info h4 {
     font-size: 20px;
-    margin-bottom: 15px;
+    margin: 0 0 15px;
+
+    height: 30px;
+
+    display: flex;
+    align-items: center;
 }
 
 .product-info button {
@@ -76,16 +97,18 @@ h1 {
 }
 
 .product-button {
+    margin-top: auto;
+
     display: block;
     width: 100%;
     padding: 12px;
+
     border-radius: 8px;
     background: #111;
     color: white;
+
     text-align: center;
     text-decoration: none;
-    cursor: pointer;
-    transition: 0.2s;
 }
 
 .product-button:hover {
@@ -507,9 +530,10 @@ h1 {
         font-size: 32px;
     }
 
-    .product-buttons {
-        flex-direction: column;
 
+    .product-buttons {
+
+        flex-direction: column;
         gap: 12px;
     }
 
