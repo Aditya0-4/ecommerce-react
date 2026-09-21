@@ -3,9 +3,9 @@ const products = [
         id: 1,
         name: "Neem & Honey Soap",
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-        price: 100,
-        originalPrice: 150,
-        discount: 33,
+        price: 90,
+        originalPrice: 120,
+        discount: 25,
         
         ingredients:[
             "Neem Extract",
@@ -57,9 +57,9 @@ const products = [
         id: 2,
         name: "Turmeric Soap",
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-        price: 100,
-        originalPrice: 150,
-        discount: 33,
+        price: 90,
+        originalPrice: 120,
+        discount: 25,
         
         ingredients:[
             "Turmeric Extract",
@@ -110,9 +110,9 @@ const products = [
         id: 3,
         name: "Lavender Soap",
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-        price: 100,
-        originalPrice: 150,
-        discount: 33,
+        price: 90,
+        originalPrice: 120,
+        discount: 25,
         
         ingredients:[
             "Lavender Extract",
@@ -162,8 +162,8 @@ const products = [
         id: 4,
         name: "Detan Soap",
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-        price: 233,
-        originalPrice: 150,
+        price: 150,
+        originalPrice: 233,
         discount: 36,
         
         ingredients:[
