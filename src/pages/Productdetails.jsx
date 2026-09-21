@@ -166,14 +166,14 @@ function ProductDetails({ cart, setCart }) {
                 {/* Key Features */}
                 <section className="detail-section">
 
-                    <h2>Key Features</h2>
+                    <h2>Key Benefits</h2>
 
                     <ul>
 
-                        {product.keyFeatures?.map(
-                            (feature, index) => (
+                        {product.keyBenefits?.map(
+                            (benefit, index) => (
                                 <li key={index}>
-                                    {feature}
+                                    {benefit}
                                 </li>
                             )
                         )}
