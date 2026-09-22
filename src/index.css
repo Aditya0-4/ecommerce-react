@@ -1416,3 +1416,25 @@ h1 {
         font-size: 32px;
     }
 }
+
+.remove-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+
+    border: 1px solid #c9a9a0;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #8a4f45;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.remove-btn:hover {
+    background: #8a4f45;
+    color: white;
+}

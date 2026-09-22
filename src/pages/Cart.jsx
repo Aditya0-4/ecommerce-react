@@ -1,7 +1,14 @@
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Cart({ cart }) {
+function Cart({ cart, setCart }) {
+
     const navigate = useNavigate();
+
+    const removeFromCart = (indexToRemove) => {
+        setCart(
+            cart.filter((_, index) => index !== indexToRemove)
+        );
+    };
 
     return (
         <main className="cart-page">
@@ -11,18 +18,24 @@ function Cart({ cart }) {
                 <h1>Your Shopping Cart</h1>
 
                 {cart.length === 0 ? (
+
                     <div className="empty-cart">
+
                         <h2>Your cart is empty</h2>
 
                         <p>
                             Add some beautiful products from Cosmo Roots
                             to see them here.
                         </p>
+
                     </div>
+
                 ) : (
+
                     <div className="cart-items">
 
                         {cart.map((cartItem, index) => (
+
                             <div
                                 className="cart-item"
                                 key={`${cartItem.id}-${index}`}
@@ -52,18 +65,31 @@ function Cart({ cart }) {
                                     </p>
 
                                     <button
-                                        onClick={() => navigate("/checkout")}
+                                        onClick={() =>
+                                            navigate("/checkout")
+                                        }
                                         className="buy-now-btn"
                                     >
                                         Buy Now
                                     </button>
 
+                                    <button
+                                        onClick={() =>
+                                            removeFromCart(index)
+                                        }
+                                        className="remove-btn"
+                                    >
+                                        Remove
+                                    </button>
+
                                 </div>
 
                             </div>
+
                         ))}
 
                     </div>
+
                 )}
 
             </div>

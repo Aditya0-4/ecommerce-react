@@ -51,7 +51,9 @@ function App() {
                 <Route
                     path="/cart"
                     element={
-                        <Cart cart={cart} />
+                        <Cart cart={cart} 
+                              setCart={setCart}
+                        />
                     }
                 />
 
