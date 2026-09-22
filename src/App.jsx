@@ -11,6 +11,9 @@ import Contact from "./pages/Contacts";
 import About from "./pages/about";
 import Checkout from "./pages/Checkout";
 
+import Login from "./pages/login";
+import Register from "./pages/register";
+
 function App() {
 
     const [cart, setCart] = useState([]);
@@ -40,19 +43,18 @@ function App() {
                         />
                     }
                 />
+
                 <Route
-                   path="/about"
-                        element={
-                        <About 
-                        />
-                    }
+                    path="/about"
+                    element={<About />}
                 />
 
                 <Route
                     path="/cart"
                     element={
-                        <Cart cart={cart} 
-                              setCart={setCart}
+                        <Cart
+                            cart={cart}
+                            setCart={setCart}
                         />
                     }
                 />
@@ -66,6 +68,17 @@ function App() {
                     path="/checkout"
                     element={<Checkout cart={cart} />}
                 />
+
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
+
             </Routes>
         </>
     );
