@@ -2,12 +2,15 @@ const products = [
     {
         id: 1,
         name: "Neem & Honey Soap",
+        category: "Soaps",
+
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+
         price: 90,
         originalPrice: 120,
         discount: 25,
-        
-        ingredients:[
+
+        ingredients: [
             "Neem Extract",
             "Honey",
             "Multani Mitti",
@@ -16,10 +19,11 @@ const products = [
             "Glycerin base",
         ],
 
-        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+        shortDescription:
+            "A gentle cleansing soap made for everyday face and body care.",
 
         weight: "100g",
-        fragrance:"Fresh Herbal",
+        fragrance: "Fresh Herbal",
 
         skinType: [
             "Normal",
@@ -36,19 +40,20 @@ const products = [
             "Suitable for regular use",
         ],
 
-        howToUse: [ 
+        howToUse: [
+            "Wet the soap and skin.",
             "Apply gently to create a rich lather.",
-            "Rinse thoroughly with water.",
-            "Wet the soap and skin."
+            "Rinse thoroughly with water."
         ],
 
         quantity: 1,
         buynow: true,
 
-        faqs:[
+        faqs: [
             {
                 question: "Is this soap suitable for daily use?",
-                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+                answer:
+                    "Yes, this soap is formulated for daily use and is gentle on the skin."
             }
         ]
     },
@@ -56,12 +61,15 @@ const products = [
     {
         id: 2,
         name: "Turmeric Soap",
+        category: "Soaps",
+
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+
         price: 90,
         originalPrice: 120,
         discount: 25,
-        
-        ingredients:[
+
+        ingredients: [
             "Turmeric Extract",
             "Neem Extract",
             "Multani Mitti",
@@ -69,10 +77,11 @@ const products = [
             "Glycerin base"
         ],
 
-        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+        shortDescription:
+            "A gentle cleansing soap made for everyday face and body care.",
 
         weight: "100g",
-        fragrance:"Fresh Turemeric",
+        fragrance: "Fresh Turmeric",
 
         skinType: [
             "Normal",
@@ -89,42 +98,47 @@ const products = [
             "Suitable for regular use",
         ],
 
-        howToUse: [ 
+        howToUse: [
+            "Wet the soap and skin.",
             "Apply gently to create a rich lather.",
-            "Rinse thoroughly with water.",
-            "Wet the soap and skin."
+            "Rinse thoroughly with water."
         ],
 
         quantity: 1,
         buynow: true,
 
-        faqs:[
+        faqs: [
             {
                 question: "Is this soap suitable for daily use?",
-                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+                answer:
+                    "Yes, this soap is formulated for daily use and is gentle on the skin."
             }
         ]
     },
 
-     {
+    {
         id: 3,
         name: "Lavender Soap",
+        category: "Soaps",
+
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+
         price: 90,
         originalPrice: 120,
         discount: 25,
-        
-        ingredients:[
+
+        ingredients: [
             "Lavender Extract",
             "Honey",
             "Vitamin E",
             "Glycerin base"
         ],
 
-        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+        shortDescription:
+            "A gentle cleansing soap made for everyday face and body care.",
 
         weight: "100g",
-        fragrance:"Fresh Lavender",
+        fragrance: "Fresh Lavender",
 
         skinType: [
             "Normal",
@@ -141,32 +155,36 @@ const products = [
             "Suitable for regular use",
         ],
 
-        howToUse: [ 
+        howToUse: [
+            "Wet the soap and skin.",
             "Apply gently to create a rich lather.",
-            "Rinse thoroughly with water.",
-            "Wet the soap and skin."
+            "Rinse thoroughly with water."
         ],
 
         quantity: 1,
         buynow: true,
 
-        faqs:[
+        faqs: [
             {
                 question: "Is this soap suitable for daily use?",
-                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+                answer:
+                    "Yes, this soap is formulated for daily use and is gentle on the skin."
             }
         ]
-     },
+    },
 
-      {
+    {
         id: 4,
         name: "Detan Soap",
+        category: "Soaps",
+
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+
         price: 150,
         originalPrice: 233,
         discount: 36,
-        
-        ingredients:[
+
+        ingredients: [
             "Beetroot Extract",
             "Manjistha",
             "Mulethi",
@@ -180,10 +198,11 @@ const products = [
             "Goat milk base"
         ],
 
-        shortDescription: "A gentle cleansing soap made for everyday face and body care.",
+        shortDescription:
+            "A gentle cleansing soap made for everyday face and body care.",
 
         weight: "100g",
-        fragrance:"Fresh Detan",
+        fragrance: "Fresh Detan",
 
         skinType: [
             "Normal",
@@ -200,22 +219,80 @@ const products = [
             "Suitable for regular use",
         ],
 
-        howToUse: [ 
+        howToUse: [
+            "Wet the soap and skin.",
             "Apply gently to create a rich lather.",
-            "Rinse thoroughly with water.",
-            "Wet the soap and skin."
+            "Rinse thoroughly with water."
         ],
 
         quantity: 1,
         buynow: true,
 
-        faqs:[
+        faqs: [
             {
                 question: "Is this soap suitable for daily use?",
-                answer: "Yes, this soap is formulated for daily use and is gentle on the skin."
+                answer:
+                    "Yes, this soap is formulated for daily use and is gentle on the skin."
             }
         ]
-      }
+    },
 
+    {
+        id: 5,
+        name: "Herbal Shampoo",
+        category: "Shampoo",
+
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+
+        price: 250,
+        originalPrice: 300,
+        discount: 17,
+
+        ingredients: [
+            "Amla, Shikakai, Ritha, Satritha, Rosemary",
+            "Tea tree oil, Sandal oil, Shampoo base",
+            "Rosewater, Neem, Curry leaves, Bhang seed",
+            "Methi leaves, Hibiscus flower, Coconut oil",
+            "SLES, CAPB, Honey, Bhringraj"
+        ],
+
+        shortDescription:
+            "A herbal shampoo designed for cleansing and everyday hair care.",
+
+        weight: "100g",
+        fragrance: "Fresh Herbal",
+
+        hairType: [
+            "Normal Hair",
+            "Oily Hair",
+            "Dry Hair"
+        ],
+
+        keyBenefits: [
+            "Nourishes scalp and strengthens hair roots",
+            "Reduces hair fall and breakage",
+            "Adds shine, softness and bounce",
+            "Natural Ingredients",
+            "Suitable for all hair types",
+        ],
+
+        howToUse: [
+            "Apply a generous amount of shampoo to your wet scalp and hair.",
+            "Gently massage the scalp and roots using your fingertips to create a rich lather.",
+            "Rinse thoroughly with water."
+        ],
+
+        quantity: 1,
+        buynow: true,
+
+        faqs: [
+            {
+                question: "Is this shampoo suitable for daily use?",
+                answer:
+                    "Yes, this shampoo is formulated for daily use and is gentle on the hair and scalp."
+            }
+        ]
+    }
 ];
+
 export default products;

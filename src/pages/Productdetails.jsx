@@ -1,19 +1,20 @@
 import { useParams } from "react-router-dom";
-import {useState} from "react";
+import { useState } from "react";
 import products from "../data/products";
 
 function ProductDetails({ cart, setCart }) {
 
     const { id } = useParams();
+
     const [quantity, setQuantity] = useState(1);
 
     const increaseQuantity = () => {
-        setQuantity(quantity+1);
+        setQuantity(quantity + 1);
     };
 
     const decreaseQuantity = () => {
         if (quantity > 1) {
-            setQuantity(quantity-1);
+            setQuantity(quantity - 1);
         }
     };
 
@@ -22,17 +23,25 @@ function ProductDetails({ cart, setCart }) {
     );
 
     const addToCart = () => {
-        setCart([...cart, {
-            ...product,
-            quantity: quantity
-        }]);
+        setCart([
+            ...cart,
+            {
+                ...product,
+                quantity: quantity
+            }
+        ]);
     };
 
     if (!product) {
         return (
             <div className="not-found">
+
                 <h1>Product Not Found</h1>
-                <p>The product you are looking for does not exist.</p>
+
+                <p>
+                    The product you are looking for does not exist.
+                </p>
+
             </div>
         );
     }
@@ -45,11 +54,14 @@ function ProductDetails({ cart, setCart }) {
 
                 {/* Product Image */}
                 <div className="product-image-section">
+
                     <img
                         src={product.image}
                         alt={product.name}
                     />
+
                 </div>
+
 
                 {/* Basic Product Information */}
                 <div className="details-info">
@@ -63,6 +75,7 @@ function ProductDetails({ cart, setCart }) {
                     <p className="short-description">
                         {product.shortDescription}
                     </p>
+
 
                     {/* Price */}
                     <div className="price-section">
@@ -85,6 +98,7 @@ function ProductDetails({ cart, setCart }) {
 
                     </div>
 
+
                     {/* Basic Information */}
                     <div className="basic-info">
 
@@ -98,49 +112,71 @@ function ProductDetails({ cart, setCart }) {
                             {product.fragrance}
                         </p>
 
-                        <p>
-                            <strong>Quantity:</strong>{" "}
-                            {product.quantity}
-                        </p>
-
                     </div>
 
-                    {/* Skin Type */}
+
+                    {/* Suitable For */}
                     <div className="detail-section">
 
                         <h3>Suitable For</h3>
 
                         <div className="tag-list">
 
-                            {product.skinType?.map((skin, index) => (
-                                <span key={index}>
-                                    {skin}
-                                </span>
-                            ))}
+                            {/* Soap → Skin Type */}
+                            {product.category === "Soaps" &&
+                                product.skinType?.map(
+                                    (skin, index) => (
+                                        <span key={index}>
+                                            {skin}
+                                        </span>
+                                    )
+                                )
+                            }
+
+
+                            {/* Shampoo → Hair Type */}
+                            {product.category === "Shampoo" &&
+                                product.hairType?.map(
+                                    (hair, index) => (
+                                        <span key={index}>
+                                            {hair}
+                                        </span>
+                                    )
+                                )
+                            }
 
                         </div>
 
                     </div>
 
+
+                    {/* Quantity Selector */}
                     <div className="quantity-section">
 
                         <p>Quantity</p>
 
                         <div className="quantity-control">
 
-                            <button onClick={decreaseQuantity}>
+                            <button
+                                onClick={decreaseQuantity}
+                            >
                                 -
                             </button>
 
-                            <span>{quantity}</span>
+                            <span>
+                                {quantity}
+                            </span>
 
-                            <button onClick={increaseQuantity}>
+                            <button
+                                onClick={increaseQuantity}
+                            >
                                 +
                             </button>
 
                         </div>
 
                     </div>
+
 
                     {/* Buttons */}
                     <div className="product-buttons">
@@ -163,8 +199,9 @@ function ProductDetails({ cart, setCart }) {
             </div>
 
 
-            {/* Product Description */}
+            {/* Product Information */}
             <div className="product-information">
+
 
                 {/* Description */}
                 <section className="detail-section">
@@ -172,7 +209,7 @@ function ProductDetails({ cart, setCart }) {
                     <h2>About This Product</h2>
 
                     <p>
-                        {product.description}
+                        {product.shortDescription}
                     </p>
 
                 </section>
@@ -198,7 +235,7 @@ function ProductDetails({ cart, setCart }) {
                 </section>
 
 
-                {/* Key Features */}
+                {/* Key Benefits */}
                 <section className="detail-section">
 
                     <h2>Key Benefits</h2>
@@ -316,7 +353,7 @@ function ProductDetails({ cart, setCart }) {
                     <h2>Delivery</h2>
 
                     <p>
-                        {product.delivery}
+                        {product.delivery || "Delivery available across India."}
                     </p>
 
                 </section>
