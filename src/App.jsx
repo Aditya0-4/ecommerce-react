@@ -5,10 +5,11 @@ import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
-import ProductDetails from "./pages/ProductDetails";
+import ProductDetails from "./pages/Productdetails";
 import Cart from "./pages/Cart";
 import Contact from "./pages/Contacts";
 import About from "./pages/about";
+import Checkout from "./pages/Checkout";
 
 function App() {
 
@@ -59,6 +60,10 @@ function App() {
                     element={<Contact />}
                 />
 
+                <Route
+                    path="/checkout"
+                    element={<Checkout cart={cart} />}
+                />
             </Routes>
         </>
     );

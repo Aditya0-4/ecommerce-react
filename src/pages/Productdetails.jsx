@@ -1,16 +1,31 @@
 import { useParams } from "react-router-dom";
+import {useState} from "react";
 import products from "../data/products";
 
 function ProductDetails({ cart, setCart }) {
 
     const { id } = useParams();
+    const [quantity, setQuantity] = useState(1);
+
+    const increaseQuantity = () => {
+        setQuantity(quantity+1);
+    };
+
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            setQuantity(quantity-1);
+        }
+    };
 
     const product = products.find(
         (item) => item.id === Number(id)
     );
 
     const addToCart = () => {
-        setCart([...cart, product]);
+        setCart([...cart, {
+            ...product,
+            quantity: quantity
+        }]);
     };
 
     if (!product) {
@@ -102,6 +117,26 @@ function ProductDetails({ cart, setCart }) {
                                     {skin}
                                 </span>
                             ))}
+
+                        </div>
+
+                    </div>
+
+                    <div className="quantity-section">
+
+                        <p>Quantity</p>
+
+                        <div className="quantity-control">
+
+                            <button onClick={decreaseQuantity}>
+                                -
+                            </button>
+
+                            <span>{quantity}</span>
+
+                            <button onClick={increaseQuantity}>
+                                +
+                            </button>
 
                         </div>
 

@@ -1,4 +1,8 @@
+import {useNavigate} from "react-router-dom";
+
 function Cart({ cart }) {
+    const navigate = useNavigate();
+
     return (
         <main className="cart-page">
 
@@ -42,6 +46,17 @@ function Cart({ cart }) {
                                     <p className="cart-price">
                                         ₹{cartItem.price}
                                     </p>
+
+                                    <p className="cart-quantity">
+                                        Quantity: {cartItem.quantity || 1}
+                                    </p>
+
+                                    <button
+                                        onClick={() => navigate("/checkout")}
+                                        className="buy-now-btn"
+                                    >
+                                        Buy Now
+                                    </button>
 
                                 </div>
 

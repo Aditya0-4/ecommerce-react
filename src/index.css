@@ -1052,3 +1052,47 @@ h1 {
     font-size: 22px;
     cursor: pointer;
 }
+
+.quantity-section {
+    margin-top: 30px;
+}
+
+.quantity-section p {
+    margin-bottom: 10px;
+    color: #3f4729;
+    font-weight: 600;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    border: 1px solid #d8c8b8;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fffaf4;
+}
+
+.quantity-control button {
+    width: 42px;
+    height: 42px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: #eee7dc;
+    color: #3f4729;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.quantity-control button:hover {
+    background: #e2d8c8;
+}
+
+.quantity-control span {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #3f4729;
+}
