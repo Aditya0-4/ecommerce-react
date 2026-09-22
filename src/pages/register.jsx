@@ -7,7 +7,7 @@ function Register() {
       <div className="auth-card">
 
         <div className="auth-header">
-          <h1>Create Account</h1>
+          <h1>Sign up</h1>
           <p>Join us and get started today</p>
         </div>
 
@@ -46,7 +46,7 @@ function Register() {
           </div>
 
           <button type="submit" className="auth-button">
-            Create Account
+            Sign up
           </button>
 
         </form>
