@@ -1,12 +1,33 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import products from "../data/products";
+import {useEffect} from "react";
 
 function ProductDetails({ cart, setCart }) {
 
     const { id } = useParams();
 
     const [quantity, setQuantity] = useState(1);
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/get-products/${id}`)
+        .then(response => {
+            if (!response.ok){
+                throw new Error("Product not found");
+            }
+            return response.json();
+        })
+        .then(data => {
+            setProduct(data);
+            setLoading(false);
+        })
+        .catch(error => {
+            setError(error.message);
+            setLoading(false);
+        })
+    }, [id]);
 
     const increaseQuantity = () => {
         setQuantity(quantity + 1);
@@ -18,10 +39,6 @@ function ProductDetails({ cart, setCart }) {
         }
     };
 
-    const product = products.find(
-        (item) => item.id === Number(id)
-    );
-
     const addToCart = () => {
         setCart([
             ...cart,
@@ -32,18 +49,8 @@ function ProductDetails({ cart, setCart }) {
         ]);
     };
 
-    if (!product) {
-        return (
-            <div className="not-found">
-
-                <h1>Product Not Found</h1>
-
-                <p>
-                    The product you are looking for does not exist.
-                </p>
-
-            </div>
-        );
+    if(loading){
+        return <h2>Loading product...</h2>
     }
 
     return (
