@@ -3,7 +3,7 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 client = MongoClient("mongodb://localhost:27017/")
-db = client["cosmo_roots_test_db"]
+db = client["cosmo_roots_db"]
 
 @app.errorhandler(404)
 def not_found(error):
