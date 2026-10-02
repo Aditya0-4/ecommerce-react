@@ -1,6 +1,8 @@
 from flask import Flask,request,jsonify
 from pymongo import MongoClient
 from flask_cors import CORS
+import bcrypt
+
 app = Flask(__name__)
 
 CORS(app)
@@ -155,6 +157,49 @@ def create_order():
   return {
     "message": "Order created successfully",
     "order_id": str(result.inserted_id)
+  }, 201
+
+@app.route("/register", methods=["POST"])
+def register():
+  data = request.get_json()
+
+  if not data:
+    return {"error": "Request body is required"},400
+
+  name = data.get("name")
+  email = data.get("email")
+  password = data.get("password")
+
+  if not name or not email or not password:
+    return{
+      "error": "Name, email, and password are required"
+    }, 400
+
+  existing_user = db.users.find_one({
+    'email': email
+  })
+
+  if existing_user:
+    return {
+      'error': 'User with this email already exists'
+    }, 409
+
+  hashed_password = bcrypt.hashpw(
+    password.encode("utf-8"),
+    bcrypt.gensalt()
+  )
+
+  user = {
+    "name": name,
+    "email": email,
+    "password": hashed_password.decode("utf-8")
+  }
+
+  result = db.users.insert_one(user)
+
+  return {
+    "message": "User registered successfully",
+    "user_id": str(result.inserted_id)
   }, 201
 
 if __name__ == "__main__":
