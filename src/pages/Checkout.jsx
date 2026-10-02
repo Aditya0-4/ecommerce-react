@@ -9,12 +9,38 @@ function Checkout({ cart }) {
             total + item.price * (item.quantity || 1),
         0
     );
-
-    const handlePlaceOrder = (e) => {
+    
+    const handlePlaceOrder = async(e) => {
         e.preventDefault();
 
-        setOrderPlaced(true);
+        const orderData = {
+            items: cart,
+            totalamount: totalPrice,
+        };
+
+        try{
+            const response = await fetch(
+                "http://127.0.0.1:5000/orders",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(orderData),
+                }
+            );
+            if(!response.ok){
+                throw new Error("Failed to place order");
+            }
+
+            const data = await response.json();
+            console.log("Order placed successfully:", data);
+            setOrderPlaced(true);
+        } catch(error){
+            console.error("Error placing order:", error);
+        }
     };
+
 
     if (orderPlaced) {
         return (

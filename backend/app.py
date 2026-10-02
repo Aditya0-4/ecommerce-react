@@ -120,17 +120,42 @@ def delete_product(product_id):
 
   return {"message": "Product deleted successfully"}
 
-@app.route("/check-db")
-def check_db():
-    print("Database:", db.name)
-    print("Collections:", db.list_collection_names())
-    print("Product count:", db.products.count_documents({}))
+# @app.route("/check-db")
+# def check_db():
+#     print("Database:", db.name)
+#     print("Collections:", db.list_collection_names())
+#     print("Product count:", db.products.count_documents({}))
 
-    return {
-        "database": db.name,
-        "collections": db.list_collection_names(),
-        "product_count": db.products.count_documents({})
-    }
+#     return {
+#         "database": db.name,
+#         "collections": db.list_collection_names(),
+#         "product_count": db.products.count_documents({})
+#     }
+
+@app.route("/orders", methods=["POST"])
+def create_order():
+  data =  request.get_json()
+
+  print("Received order data:", data)  # Debugging statement
+
+  if not data:
+    return {"error": "Request body is required"},400
+  if "items" not in data:
+    return {"error": "Items are required"},400
+  if "totalamount" not in data:
+    return {"error": "Total amount is required"},400
+
+  order = {
+    "items": data["items"],
+    "totalamount": data["totalamount"]
+  }
+
+  result = db.orders.insert_one(order)
+
+  return {
+    "message": "Order created successfully",
+    "order_id": str(result.inserted_id)
+  }, 201
 
 if __name__ == "__main__":
   app.run(debug=True)

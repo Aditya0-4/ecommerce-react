@@ -13,17 +13,20 @@ function ProductDetails({ cart, setCart }) {
 
     useEffect(() => {
         fetch(`http://localhost:5000/get-products/${id}`)
-        .then(response => {
+        .then(response => {  // response object by flask
+            console.log(response);
             if (!response.ok){
                 throw new Error("Product not found");
             }
-            return response.json();
+            return response.json();  // reads response body and parse it to js object
         })
         .then(data => {
+            console.log(data);
             setProduct(data);
             setLoading(false);
         })
         .catch(error => {
+            console.error(error);
             setError(error.message);
             setLoading(false);
         })
