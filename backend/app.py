@@ -2,10 +2,15 @@ from flask import Flask,request,jsonify
 from pymongo import MongoClient
 from flask_cors import CORS
 import bcrypt
+from bson import ObjectId
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 app = Flask(__name__)
 
 CORS(app)
+
+app.config["JWT_SECRET_KEY"] = "your_jwt_secret_key"  # Change this to a secure key in production
+JWTManager(app)
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["cosmo_roots_db"]
@@ -201,6 +206,76 @@ def register():
     "message": "User registered successfully",
     "user_id": str(result.inserted_id)
   }, 201
+
+@app.route("/login", methods=["POST"])
+def login():
+
+  data = request.get_json()
+
+  if not data:
+    return {"error": "Request body is required"},400
+
+  email = data.get("email")
+  password = data.get("password")
+
+  if not email or not password:
+    return {
+      "error": "Email and password are required"
+    }, 400
+
+  user = db.users.find_one(
+    {"email": email}
+  )
+
+  if not user:
+    return {
+      "error": "Invalid email or password"
+    }, 401
+
+  password_correct = bcrypt.checkpw(
+    password.encode("utf-8"),
+    user["password"].encode("utf-8") # Converts hashed string to bytes
+  )
+
+  if not password_correct:
+    return {
+      "error": "Invalid email or password"
+    }, 401
+
+  access_token = create_access_token(
+    identity=str(user["_id"])
+  )
+
+  return {
+    "message": "Login successful",
+    "access_token": access_token,
+    "user": {
+      "name": user["name"],
+      "email": user["email"]
+    }
+  }, 200
+
+@app.route("/profile", methods=["GET"])
+@jwt_required()
+def profile():
+
+  user_id = get_jwt_identity()
+  user = db.users.find_one({
+    "_id": ObjectId(user_id)
+  })
+
+  if not user:
+    return{
+      "error": "User not found"
+    }, 404
+
+  return{
+    "message": "You are authenticated",
+    "user": {
+      "name": user["name"],
+      "email": user["email"]
+    }
+  }, 200
 
 if __name__ == "__main__":
   app.run(debug=True)

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import Profile from "./pages/profile";
 
 import Navbar from "./components/Navbar";
 
@@ -77,6 +78,11 @@ function App() {
                 <Route
                     path="/register"
                     element={<Register />}
+                />
+
+                <Route
+                    path="/profile"
+                    element={<Profile />}
                 />
 
             </Routes>
