@@ -56,6 +56,23 @@ function getValidStoredToken() {
     return token;
 }
 
+function getTokenPayload(token) {
+    try {
+        const base64 = token.split(".")[1]
+            .replace(/-/g, "+")
+            .replace(/_/g, "/");
+
+        const padded = base64.padEnd(
+            Math.ceil(base64.length / 4) * 4,
+            "="
+        );
+
+        return JSON.parse(atob(padded));
+    } catch {
+        return null;
+    }
+}
+
 export function AuthProvider({ children }) {
     const [token, setToken] = useState(getValidStoredToken);
 
@@ -100,6 +117,8 @@ export function AuthProvider({ children }) {
     }, [token]);
 
     const isLoggedIn = Boolean(token);
+    const payload = token ? getTokenPayload(token) : null;
+    const isAdmin = payload?.role === "admin";
 
     return (
         <AuthContext.Provider
@@ -107,7 +126,8 @@ export function AuthProvider({ children }) {
                 token,
                 isLoggedIn,
                 login,
-                logout
+                logout,
+                isAdmin
             }}
         >
             {children}

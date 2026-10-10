@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/trans.png";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar({ cart }) {
-
     const [searchOpen, setSearchOpen] = useState(false);
     const [search, setSearch] = useState("");
 
     const navigate = useNavigate();
 
+    // Check whether the logged-in user is an admin
+    const { isAdmin } = useAuth();
+
     const handleSearch = (e) => {
         e.preventDefault();
 
         if (search.trim() !== "") {
-            navigate(`/products?search=${encodeURIComponent(search)}`);
+            navigate(
+                `/products?search=${encodeURIComponent(search)}`
+            );
         }
     };
 
@@ -34,6 +39,13 @@ function Navbar({ cart }) {
                 <Link to="/products">Products</Link>
                 <Link to="/about">About Us</Link>
                 <Link to="/contact">Contact</Link>
+
+                {/* Visible only to admin users */}
+                {isAdmin && (
+                    <Link to="/sales-analytics">
+                        Sales Analytics
+                    </Link>
+                )}
             </div>
 
             {/* Right side */}
@@ -48,15 +60,20 @@ function Navbar({ cart }) {
                                 type="text"
                                 placeholder="Search products..."
                                 value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                                onChange={(e) =>
+                                    setSearch(e.target.value)
+                                }
                                 autoFocus
                             />
                         </form>
                     )}
 
                     <button
+                        type="button"
                         className="search-button"
-                        onClick={() => setSearchOpen(!searchOpen)}
+                        onClick={() =>
+                            setSearchOpen(!searchOpen)
+                        }
                     >
                         🔍
                     </button>
@@ -78,4 +95,3 @@ function Navbar({ cart }) {
 }
 
 export default Navbar;
-

@@ -3,8 +3,9 @@ from pymongo import MongoClient
 from flask_cors import CORS
 import bcrypt
 from bson import ObjectId
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from datetime import timedelta
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 
@@ -156,7 +157,8 @@ def create_order():
 
   order = {
     "items": data["items"],
-    "totalamount": data["totalamount"]
+    "totalamount": data["totalamount"],
+    "created_at": datetime.now(timezone.utc)
   }
 
   result = db.orders.insert_one(order)
@@ -199,7 +201,8 @@ def register():
   user = {
     "name": name,
     "email": email,
-    "password": hashed_password.decode("utf-8")
+    "password": hashed_password.decode("utf-8"),
+    "role": "user"
   }
 
   result = db.users.insert_one(user)
@@ -244,8 +247,10 @@ def login():
       "error": "Invalid email or password"
     }, 401
 
+  role =user.get("role", "user")
   access_token = create_access_token(
-    identity=str(user["_id"])
+    identity=str(user["_id"]),
+    additional_claims={"role": role}
   )
 
   return {
@@ -253,7 +258,8 @@ def login():
     "access_token": access_token,
     "user": {
       "name": user["name"],
-      "email": user["email"]
+      "email": user["email"],
+      "role": role
     }
   }, 200
 
@@ -278,6 +284,104 @@ def profile():
       "email": user["email"]
     }
   }, 200
+
+
+@app.route("/sales-analytics", methods=["GET"])
+@jwt_required()
+def sales_analytics():
+    orders = list(db.orders.find({}))
+
+    total_revenue = 0
+    total_units = 0
+    product_stats = {}
+    monthly_stats = {}
+
+    now = datetime.now(timezone.utc)
+
+    # Prepare the current month and previous five months.
+    months = []
+    year = now.year
+    month = now.month
+
+    for _ in range(6):
+        key = f"{year}-{month:02d}"
+        months.append(key)
+        monthly_stats[key] = 0
+
+        month -= 1
+        if month == 0:
+            month = 12
+            year -= 1
+
+    months.reverse()
+
+    for order in orders:
+        amount = float(order.get("totalamount", 0) or 0)
+        total_revenue += amount
+
+        # Use the saved order date when available.
+        # Older orders can use their MongoDB ObjectId timestamp.
+        order_date = order.get("created_at")
+
+        if not isinstance(order_date, datetime):
+            order_id = order.get("_id")
+            order_date = (
+                order_id.generation_time
+                if isinstance(order_id, ObjectId)
+                else None
+            )
+
+        if order_date:
+            if order_date.tzinfo is None:
+                order_date = order_date.replace(
+                    tzinfo=timezone.utc
+                )
+
+            month_key = order_date.strftime("%Y-%m")
+
+            if month_key in monthly_stats:
+                monthly_stats[month_key] += amount
+
+        for item in order.get("items", []):
+            name = item.get("name", "Unknown Product")
+            quantity = int(item.get("quantity", 0) or 0)
+            price = float(item.get("price", 0) or 0)
+
+            total_units += quantity
+
+            if name not in product_stats:
+                product_stats[name] = {
+                    "name": name,
+                    "units_sold": 0,
+                    "revenue": 0
+                }
+
+            product_stats[name]["units_sold"] += quantity
+            product_stats[name]["revenue"] += price * quantity
+
+    products = sorted(
+        product_stats.values(),
+        key=lambda product: product["revenue"],
+        reverse=True
+    )
+
+    return jsonify({
+        "total_revenue": round(total_revenue, 2),
+        "order_count": len(orders),
+        "units_sold": total_units,
+        "average_order_value": round(
+            total_revenue / len(orders), 2
+        ) if orders else 0,
+        "product_performance": products,
+        "monthly_revenue": [
+            {
+                "month": key,
+                "revenue": round(monthly_stats[key], 2)
+            }
+            for key in months
+        ]
+    }), 200
+
 
 if __name__ == "__main__":
   app.run(debug=True)

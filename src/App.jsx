@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Profile from "./pages/profile";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -16,9 +16,24 @@ import Checkout from "./pages/Checkout";
 import Login from "./pages/login";
 import Register from "./pages/register";
 
+import SalesAnalytics from "./pages/SalesAnalytics";
+import AdminRoute from "./components/AdminRoute";
+
 function App() {
 
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState(() => {
+        try{
+            const savedCart = localStorage.getItem("cart");
+            return savedCart ? JSON.parse(savedCart) : [];
+        }
+          catch {
+            return [];
+     }
+   }); 
+
+   useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart]);
 
     return (
         <>
@@ -94,6 +109,15 @@ function App() {
                         </ProtectedRoute>
                     }
                 />  
+
+                <Route 
+                    path="/sales-analytics"
+                    element={
+                        <AdminRoute>
+                            <SalesAnalytics />
+                        </AdminRoute>
+                    }
+                />
                 
             </Routes>
         </>
