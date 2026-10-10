@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Profile from "./pages/profile";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Navbar from "./components/Navbar";
 
@@ -65,10 +66,6 @@ function App() {
                     element={<Contact />}
                 />
 
-                <Route
-                    path="/checkout"
-                    element={<Checkout cart={cart} />}
-                />
 
                 <Route
                     path="/login"
@@ -81,10 +78,23 @@ function App() {
                 />
 
                 <Route
-                    path="/profile"
-                    element={<Profile />}
+                    path="/checkout"
+                    element={
+                        <ProtectedRoute>
+                            <Checkout cart={cart} />
+                        </ProtectedRoute>
+                    }
                 />
 
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedRoute>
+                            <Profile />
+                        </ProtectedRoute>
+                    }
+                />  
+                
             </Routes>
         </>
     );
