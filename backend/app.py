@@ -4,12 +4,14 @@ from flask_cors import CORS
 import bcrypt
 from bson import ObjectId
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from datetime import timedelta
 
 app = Flask(__name__)
 
 CORS(app)
 
 app.config["JWT_SECRET_KEY"] = "your_jwt_secret_key"  # Change this to a secure key in production
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Token expires in 1 hour
 JWTManager(app)
 
 client = MongoClient("mongodb://localhost:27017/")

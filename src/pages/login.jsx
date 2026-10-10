@@ -1,13 +1,20 @@
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Auth.css";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     const loginData = {
       email: email,
@@ -15,7 +22,7 @@ function Login() {
     };
 
     try {
-      const response = await fetch (
+      const response = await fetch(
         "http://127.0.0.1:5000/login",
         {
           method: "POST",
@@ -25,16 +32,25 @@ function Login() {
           body: JSON.stringify(loginData)
         }
       );
+
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to login");
       }
-      localStorage.setItem("token", data.access_token);
-      console.log("Login successful:", data);
-      
+
+      const success = login(data.access_token);
+
+      if (!success) {
+        throw new Error("Invalid or expired token. Please log in again.");
+      }
+
+      // Navigate to the profile after successful login.
+      navigate("/profile", { replace: true });
+
     } catch (error) {
       console.error("Login error:", error);
+      setError(error.message || "Unable to login. Please try again.");
     }
   };
 
@@ -56,6 +72,7 @@ function Login() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -66,8 +83,15 @@ function Login() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
+
+          {error && (
+            <p role="alert" style={{ color: "red" }}>
+              {error}
+            </p>
+          )}
 
           <div className="form-options">
             <label className="remember">
