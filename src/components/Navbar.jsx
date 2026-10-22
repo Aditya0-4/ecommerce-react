@@ -39,6 +39,7 @@ function Navbar({ cart }) {
                 <Link to="/products">Products</Link>
                 <Link to="/about">About Us</Link>
                 <Link to="/contact">Contact</Link>
+                <Link to="/my-orders">My Orders</Link> 
 
                 {/* Visible only to admin users */}
                 {isAdmin && (

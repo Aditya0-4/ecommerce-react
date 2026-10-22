@@ -18,6 +18,7 @@ import Register from "./pages/register";
 
 import SalesAnalytics from "./pages/SalesAnalytics";
 import AdminRoute from "./components/AdminRoute";
+import MyOrders from "./pages/MyOrders";
 
 function App() {
 
@@ -116,6 +117,15 @@ function App() {
                         <AdminRoute>
                             <SalesAnalytics />
                         </AdminRoute>
+                    }
+                />
+
+                <Route
+                    path="/my-orders"
+                    element={
+                        <protectedRoute>
+                            <MyOrders/>
+                        </protectedRoute>
                     }
                 />
                 

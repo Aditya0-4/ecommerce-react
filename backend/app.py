@@ -9,7 +9,17 @@ from datetime import datetime, timezone
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": ["http://127.0.0.1:5173",
+                        "http://localhost:5173/"]
+        }
+    },
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+)
 
 app.config["JWT_SECRET_KEY"] = "your_jwt_secret_key"  # Change this to a secure key in production
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Token expires in 1 hour
@@ -144,6 +154,7 @@ def delete_product(product_id):
 
 @app.route("/orders", methods=["POST"])
 def create_order():
+  user_id = get_jwt_identity()  # Get the user ID from the JWT token
   data =  request.get_json()
 
   print("Received order data:", data)  # Debugging statement
@@ -158,6 +169,8 @@ def create_order():
   order = {
     "items": data["items"],
     "totalamount": data["totalamount"],
+    "user_id": user_id,
+    "status": "pending",
     "created_at": datetime.now(timezone.utc)
   }
 
@@ -167,6 +180,50 @@ def create_order():
     "message": "Order created successfully",
     "order_id": str(result.inserted_id)
   }, 201
+
+
+from flask import jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
+@app.route("/my-orders", methods=["GET"])
+@jwt_required()
+def get_my_orders():
+    try:
+        # Identify the logged-in customer
+        user_id = get_jwt_identity()
+
+        # Fetch only this customer's orders
+        orders = list(
+            db.orders.find(
+                {"user_id": user_id}
+            ).sort("created_at", -1)
+        )
+
+        result = []
+
+        for order in orders:
+            created_at = order.get("created_at")
+
+            result.append({
+                "id": str(order["_id"]),
+                "items": order.get("items", []),
+                "totalamount": order.get("totalamount", 0),
+                "status": order.get("status", "Pending"),
+                "created_at": (
+                    created_at.isoformat()
+                    if created_at else None
+                )
+            })
+
+        # Always return a valid JSON response
+        return jsonify(result), 200
+
+    except Exception as e:
+        print("My Orders Error:", str(e))
+        return jsonify({
+            "error": "Unable to fetch your orders"
+        }), 500
+
 
 @app.route("/register", methods=["POST"])
 def register():

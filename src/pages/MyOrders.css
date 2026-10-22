@@ -1,0 +1,157 @@
+
+.my-orders-page {
+    min-height: 70vh;
+    padding: 48px 6%;
+    background: #f8eee3;
+    color: #29291f;
+}
+
+.orders-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.orders-eyebrow {
+    color: #536b3b;
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: 700;
+}
+
+.orders-header h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(32px, 4vw, 44px);
+    margin: 12px 0;
+}
+
+.orders-header > p:last-child {
+    color: #716b60;
+}
+
+.orders-list {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    gap: 22px;
+}
+
+.order-card,
+.orders-empty {
+    background: #fffaf4;
+    border: 1px solid #e8dccd;
+    border-radius: 14px;
+    padding: 24px;
+}
+
+.orders-empty {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 48px 24px;
+}
+
+.orders-empty p,
+.order-date,
+.order-item p {
+    color: #716b60;
+}
+
+.order-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #e8dccd;
+}
+
+.order-top h2 {
+    font-size: 18px;
+    margin: 0 0 8px;
+}
+
+.order-date {
+    margin: 0;
+    font-size: 13px;
+}
+
+.order-status {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: #eee7d8;
+    color: #655633;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-delivered {
+    background: #e4ecd9;
+    color: #3e612e;
+}
+
+.status-shipped {
+    background: #e2eaf2;
+    color: #345a7b;
+}
+
+.status-cancelled {
+    background: #f5e2df;
+    color: #963d32;
+}
+
+.order-items {
+    padding: 8px 0;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+}
+
+.order-item h3 {
+    font-size: 15px;
+    margin: 0 0 6px;
+}
+
+.order-item p {
+    font-size: 13px;
+    margin: 0;
+}
+
+.order-item > span {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.order-total {
+    border-top: 1px solid #e8dccd;
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.order-total strong {
+    color: #536b3b;
+    font-size: 18px;
+}
+
+.orders-error {
+    text-align: center;
+    color: #963d32;
+}
+
+@media (max-width: 600px) {
+    .my-orders-page {
+        padding: 32px 16px;
+    }
+
+    .order-card {
+        padding: 18px;
+    }
+}
