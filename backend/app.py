@@ -6,6 +6,7 @@ from bson import ObjectId
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from datetime import timedelta
 from datetime import datetime, timezone
+from recommender import recommend_products
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ CORS(
     resources={
         r"/*": {
             "origins": ["http://127.0.0.1:5173",
-                        "http://localhost:5173/"]
+                        "http://localhost:5173"]
         }
     },
     allow_headers=["Content-Type", "Authorization"],
@@ -27,6 +28,7 @@ JWTManager(app)
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["cosmo_roots_db"]
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -438,6 +440,67 @@ def sales_analytics():
             for key in months
         ]
     }), 200
+
+
+@app.route("/recommendations", methods=["POST"])
+def get_recommendations():
+    try:
+        data = request.get_json(silent=True)
+
+        if not isinstance(data, dict):
+            return jsonify({"error": "A JSON request body is required"}), 400
+
+        # Read customer preferences
+        skin_type = data.get("skinType", "")
+        ingredients = data.get("ingredients", [])
+        benefits = data.get("benefits", [])
+
+        # Validate the request
+        if not isinstance(skin_type, str):
+            return jsonify({"error": "skinType must be a string"}), 400
+
+        if not isinstance(ingredients, list) or not all(
+            isinstance(item, str) for item in ingredients
+        ):
+            return jsonify({"error": "ingredients must be a list of strings"}), 400
+
+        if not isinstance(benefits, list) or not all(
+            isinstance(item, str) for item in benefits
+        ):
+            return jsonify({"error": "benefits must be a list of strings"}), 400
+
+        if not skin_type.strip() and not ingredients and not benefits:
+            return jsonify({
+                "error": "Please select at least one preference"
+            }), 400
+
+        # Retrieve products from MongoDB
+        products = list(db.products.find({}, {"_id": 0}))
+
+        # Run our recommendation algorithm
+        preferences = {
+            "skinType": skin_type.strip(),
+            "ingredients": ingredients,
+            "benefits": benefits
+        }
+
+        results = recommend_products(
+            products,
+            preferences,
+            limit=3
+        )
+
+        return jsonify({
+            "recommendations": results,
+            "count": len(results)
+        }), 200
+
+    except Exception as e:
+        app.logger.exception("Recommendation error")
+        return jsonify({
+            "error": "Unable to generate recommendations"
+        }), 500
+
 
 
 if __name__ == "__main__":

@@ -19,6 +19,7 @@ import Register from "./pages/register";
 import SalesAnalytics from "./pages/SalesAnalytics";
 import AdminRoute from "./components/AdminRoute";
 import MyOrders from "./pages/MyOrders";
+import Recommendations from "./pages/Recommendations";
 
 function App() {
 
@@ -127,6 +128,10 @@ function App() {
                             <MyOrders/>
                         </protectedRoute>
                     }
+                />
+                <Route
+                    path="/recommendations"
+                    element={<Recommendations />}
                 />
                 
             </Routes>

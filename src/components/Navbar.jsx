@@ -89,6 +89,10 @@ function Navbar({ cart }) {
                     </span>
                 </Link>
 
+                <Link to = "/recommendations" className="recommendations-link">
+                    🧼
+                </Link>
+
             </div>
 
         </nav>
