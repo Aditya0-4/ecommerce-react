@@ -131,7 +131,10 @@ function App() {
                 />
                 <Route
                     path="/recommendations"
-                    element={<Recommendations />}
+                    element={<Recommendations
+                        cart={cart}
+                        setCart={setCart}
+                     />}
                 />
                 
             </Routes>

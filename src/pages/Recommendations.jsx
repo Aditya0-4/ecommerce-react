@@ -21,7 +21,7 @@ const benefitOptions = [
   "Natural Ingredients",
 ];
 
-function Recommendations() {
+function Recommendations({cart, setCart}) {
   const navigate = useNavigate();
 
   const [skinType, setSkinType] = useState("");
@@ -32,6 +32,7 @@ function Recommendations() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
+  const [addedProductId, setAddedProductId] = useState(null);
 
   function toggleOption(value, selected, setSelected) {
     setSelected((previous) =>
@@ -94,6 +95,11 @@ function Recommendations() {
     setRecommendations([]);
     setError("");
     setSearched(false);
+  }
+
+  function handleAddToCart(product) {
+    setCart((previousCart) => [...previousCart,product]);
+    setAddedProductId(product.id);
   }
 
   return (
@@ -271,10 +277,22 @@ function Recommendations() {
 
                     <button
                       type="button"
-                      className="view-product-button"
-                      onClick={() =>
-                        navigate(`/product/${product.id}`)
-                      }
+                      className="add-recommendation-cart-button"
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Add to Cart
+                    </button>
+
+                    {addedProductId === product.id && (
+                      <p className="added-to-cart-message" role="status">
+                        Added to your cart!
+                      </p>
+                    )}
+
+                    <button
+                    type="button"
+                    className="view-product-button"
+                    onClick={() => navigate(`/product/${product.id}`)}
                     >
                       View Product
                     </button>
