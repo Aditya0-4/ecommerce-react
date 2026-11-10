@@ -1,10 +1,25 @@
 import { useSearchParams } from "react-router-dom";
-import products from "../data/products";
 import ProductCard from "../components/ProductCard";
+import {useEffect, ueState} from "react";
 
 function Products() {
 
     const [searchParams] = useSearchParams();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("http://localhost:5000/get-products")
+        .then(response => response.json())
+        .then(data=> {
+            setProducts(data);
+            setLoading(false);
+        })
+        .catch(error=> {
+            console.error("Error fetching products:", error);
+            setLoading(false);
+        })
+    }, []);
 
     const search = searchParams.get("search") || "";
 

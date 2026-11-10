@@ -4,8 +4,8 @@ function Checkout({ cart }) {
 
     const [orderPlaced, setOrderPlaced] = useState(false);
 
-    const totalPrice = cart.reduce(
-        (total, item) =>
+    const totalPrice = cart.reduce( // reduce goes through every obj inside cart array..
+        (total, item) => // item is the current obj inside cart array,total created by reduce and maintains the running total..
             total + item.price * (item.quantity || 1),
         0
     );
@@ -25,6 +25,7 @@ function Checkout({ cart }) {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`, // Include the JWT token in the Authorization header
                     },
                     body: JSON.stringify(orderData),
                 }

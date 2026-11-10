@@ -23,7 +23,6 @@ function ProductDetails({ cart, setCart }) {
 
                 const response = await fetch(
                     `http://localhost:5000/get-products/${id}`,
-                    { signal: controller.signal }
                 );
 
                 if (!response.ok) {
