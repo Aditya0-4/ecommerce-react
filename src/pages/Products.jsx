@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
-import {useEffect, ueState} from "react";
+import {useEffect, useState} from "react";
 
 function Products() {
 
@@ -12,7 +12,7 @@ function Products() {
         fetch("http://localhost:5000/get-products")
         .then(response => response.json())
         .then(data=> {
-            setProducts(data);
+            setProducts(data.products);
             setLoading(false);
         })
         .catch(error=> {

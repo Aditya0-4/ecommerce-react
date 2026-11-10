@@ -267,3 +267,58 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+
+/* Recommendation Match Information */
+
+.match-info {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8eee3;
+    border: 1px solid #e8dccd;
+    border-radius: 10px;
+}
+
+.match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.match-header h4 {
+    margin: 0;
+    color: #29291f;
+    font-size: 15px;
+}
+
+.match-score {
+    color: #536b3b;
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.match-reasons p {
+    font-size: 13px;
+    margin: 8px 0;
+    color: #444;
+    line-height: 1.5;
+}
+
+.match-reasons span {
+    color: #536b3b;
+    font-weight: bold;
+    margin-right: 6px;
+}
+
+/* Added to Cart Message */
+
+.added-to-cart-message {
+    color: #536b3b;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    margin: 8px 0;
+}

@@ -7,7 +7,6 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from datetime import timedelta
 from datetime import datetime, timezone
 from recommender import recommend_products
-
 app = Flask(__name__)
 
 CORS(
@@ -183,9 +182,6 @@ def create_order():
     "order_id": str(result.inserted_id)
   }, 201
 
-
-from flask import jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
 
 @app.route("/my-orders", methods=["GET"])
 @jwt_required()

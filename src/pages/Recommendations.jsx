@@ -21,7 +21,7 @@ const benefitOptions = [
   "Natural Ingredients",
 ];
 
-function Recommendations({cart, setCart}) {
+function Recommendations({ cart, setCart }) {
   const navigate = useNavigate();
 
   const [skinType, setSkinType] = useState("");
@@ -54,6 +54,7 @@ function Recommendations({cart, setCart}) {
     setError("");
     setSearched(false);
     setRecommendations([]);
+    setAddedProductId(null);
 
     try {
       const response = await fetch(`${API_URL}/recommendations`, {
@@ -76,13 +77,16 @@ function Recommendations({cart, setCart}) {
 
       setRecommendations(data.recommendations || []);
       setSearched(true);
+
     } catch (err) {
       console.error("Recommendation error:", err);
+
       setError(
         err.message === "Failed to fetch"
           ? "Cannot connect to the server. Please check that Flask is running."
           : err.message || "Something went wrong. Please try again."
       );
+
     } finally {
       setLoading(false);
     }
@@ -95,15 +99,18 @@ function Recommendations({cart, setCart}) {
     setRecommendations([]);
     setError("");
     setSearched(false);
+    setAddedProductId(null);
   }
 
   function handleAddToCart(product) {
-    setCart((previousCart) => [...previousCart,product]);
+    setCart((previousCart) => [...previousCart, product]);
     setAddedProductId(product.id);
   }
 
   return (
     <main className="recommendation-page">
+
+      {/* Hero Section */}
       <section className="recommendation-hero">
         <p className="recommendation-eyebrow">
           PERSONALIZED SKINCARE • COSMO ROOTS
@@ -117,14 +124,19 @@ function Recommendations({cart, setCart}) {
         </p>
       </section>
 
+      {/* Preference Form */}
       <form className="preference-form" onSubmit={handleSubmit}>
+
         <div className="form-heading">
           <h2>Your Preferences</h2>
           <p>Select one or more options to personalize your results.</p>
         </div>
 
+        {/* Skin Type */}
         <div className="preference-group">
-          <label htmlFor="skinType">1. Select your skin type</label>
+          <label htmlFor="skinType">
+            1. Select your skin type
+          </label>
 
           <select
             id="skinType"
@@ -139,6 +151,7 @@ function Recommendations({cart, setCart}) {
           </select>
         </div>
 
+        {/* Ingredients */}
         <div className="preference-group">
           <p className="group-label">
             2. Ingredients you prefer
@@ -158,12 +171,14 @@ function Recommendations({cart, setCart}) {
                     )
                   }
                 />
+
                 <span>{ingredient}</span>
               </label>
             ))}
           </div>
         </div>
 
+        {/* Benefits */}
         <div className="preference-group">
           <p className="group-label">
             3. What matters most to you?
@@ -179,18 +194,21 @@ function Recommendations({cart, setCart}) {
                     toggleOption(benefit, benefits, setBenefits)
                   }
                 />
+
                 <span>{benefit}</span>
               </label>
             ))}
           </div>
         </div>
 
+        {/* Error */}
         {error && (
           <p className="recommendation-error" role="alert">
             {error}
           </p>
         )}
 
+        {/* Form Buttons */}
         <div className="form-actions">
           <button
             type="submit"
@@ -208,16 +226,20 @@ function Recommendations({cart, setCart}) {
             Reset
           </button>
         </div>
+
       </form>
 
+      {/* Loading */}
       {loading && (
         <p className="recommendation-status" role="status">
           Comparing your preferences with our products...
         </p>
       )}
 
+      {/* Recommendation Results */}
       {searched && (
         <section className="recommendation-results">
+
           <h2>Your Recommended Soaps</h2>
 
           <p className="results-description">
@@ -226,16 +248,23 @@ function Recommendations({cart, setCart}) {
 
           {recommendations.length === 0 ? (
             <p>
-              No products are available to recommend yet.
+              No products match your selected preferences.
+              Try selecting different ingredients or benefits.
             </p>
           ) : (
+
             <div className="recommendation-grid">
+
               {recommendations.map((product) => (
+
                 <article
                   className="recommendation-card"
                   key={product.id}
                 >
+
+                  {/* Product Image */}
                   <div className="recommendation-image-wrap">
+
                     <img
                       src={product.image}
                       alt={product.name}
@@ -243,15 +272,19 @@ function Recommendations({cart, setCart}) {
                     />
 
                     <span className="match-badge">
-                      {product.matchScore}% match
+                      {product.matchScore}% Match
                     </span>
+
                   </div>
 
+                  {/* Product Information */}
                   <div className="recommendation-card-content">
+
                     <h3>{product.name}</h3>
 
                     <p className="recommended-price">
                       ₹{product.price}
+
                       {product.originalPrice && (
                         <del> ₹{product.originalPrice}</del>
                       )}
@@ -261,20 +294,36 @@ function Recommendations({cart, setCart}) {
                       {product.shortDescription}
                     </p>
 
-                    <h4>Why this matches</h4>
+                    {/* Match Information */}
+                    <div className="match-info">
 
-                    {product.matchReasons?.length > 0 ? (
-                      <ul className="match-reasons">
-                        {product.matchReasons.map((reason, index) => (
-                          <li key={`${product.id}-${index}`}>
-                            {reason}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No matching attributes were found.</p>
-                    )}
+                      <div className="match-header">
+                        <h4>Why we recommend this</h4>
 
+                        <span className="match-score">
+                          {product.matchScore}% Match
+                        </span>
+                      </div>
+
+                      <div className="match-reasons">
+
+                        {product.matchReasons?.length > 0 ? (
+
+                          product.matchReasons.map((reason, index) => (
+                            <p key={`${product.id}-${index}`}>
+                              <span>✓</span> {reason}
+                            </p>
+                          ))
+
+                        ) : (
+                          <p>No matching attributes were found.</p>
+                        )}
+
+                      </div>
+
+                    </div>
+
+                    {/* Add to Cart */}
                     <button
                       type="button"
                       className="add-recommendation-cart-button"
@@ -289,20 +338,28 @@ function Recommendations({cart, setCart}) {
                       </p>
                     )}
 
+                    {/* View Product */}
                     <button
-                    type="button"
-                    className="view-product-button"
-                    onClick={() => navigate(`/product/${product.id}`)}
+                      type="button"
+                      className="view-product-button"
+                      onClick={() => navigate(`/product/${product.id}`)}
                     >
                       View Product
                     </button>
+
                   </div>
+
                 </article>
+
               ))}
+
             </div>
+
           )}
+
         </section>
       )}
+
     </main>
   );
 }
