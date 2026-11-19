@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Profile from "./pages/profile";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminOrders from "./pages/AdminOrders";
 
 import Chatbot from "./components/Chatbot";
 import Navbar from "./components/Navbar";
@@ -149,10 +150,19 @@ function App() {
                     }
                 />
 
+                <Route
+                path="/admin-orders"
+                element={
+                    <AdminRoute>
+                        <AdminOrders/>
+                    </AdminRoute>
+                }
+                />
             </Routes>
 
                 
             <Chatbot/>
+
         </>
     );
 }

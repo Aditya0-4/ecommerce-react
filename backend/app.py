@@ -250,7 +250,8 @@ def create_order():
     "totalamount": data["totalamount"],
     "user_id": user_id,
     "status": "pending",
-    "created_at": datetime.now(timezone.utc)
+    "created_at": datetime.now(timezone.utc),
+    "order_status":"pending"
   }
 
   result = db.orders.insert_one(order)
@@ -259,6 +260,23 @@ def create_order():
     "message": "Order created successfully",
     "order_id": str(result.inserted_id)
   }, 201
+
+@app.route("/getOrders", methods=["GET"])
+@jwt_required()
+def get_orders():
+
+      orders = list(
+         db.orders.find()
+      )
+
+      for order in orders:
+         order['_id'] = str(order['_id'])
+
+      return {
+         "success":True,
+         "total_orders":len(orders),
+         "orders":orders
+      },200
 
 
 @app.route("/my-orders", methods=["GET"])
