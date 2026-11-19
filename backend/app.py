@@ -1,4 +1,5 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,Response
+import requests
 from pymongo import MongoClient
 from flask_cors import CORS
 import bcrypt
@@ -7,7 +8,10 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from datetime import timedelta
 from datetime import datetime, timezone
 from recommender import recommend_products
+from forecasting import forecast_bp
 app = Flask(__name__)
+
+app.register_blueprint(forecast_bp)
 
 CORS(
     app,
@@ -58,6 +62,76 @@ def test_db():
   }
   db.test.insert_one(test_data)
   return "Test data inserted into MongoDB"
+
+
+
+# n8n Chatbot Webhook
+N8N_CHAT_URL = "https://aditya-01.app.n8n.cloud/webhook/a8b6116d-0fc6-40a7-a0ce-811ef71cf943/chat"
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.get_json(silent=True)
+
+        if not data:
+            return jsonify({
+                "error": "Request body is required"
+            }), 400
+
+        chat_input = data.get("chatInput")
+        session_id = data.get("sessionId")
+
+        if not chat_input or not session_id:
+            return jsonify({
+                "error": "chatInput and sessionId are required"
+            }), 400
+
+        # Forward the customer's message to n8n
+        n8n_response = requests.post(
+            N8N_CHAT_URL,
+            json={
+                "chatInput": chat_input,
+                "sessionId": session_id
+            },
+            timeout=60
+        )
+
+        print("N8N STATUS:", n8n_response.status_code)
+        print("N8N RESPONSE:", n8n_response.text)
+
+        # Return n8n's response to React
+        return Response(
+            n8n_response.content,
+            status=n8n_response.status_code,
+            content_type=n8n_response.headers.get(
+                "Content-Type",
+                "application/json"
+            )
+        )
+
+    except requests.exceptions.Timeout:
+        return jsonify({
+            "error": "The AI assistant took too long to respond"
+        }), 504
+
+    except requests.exceptions.RequestException as e:
+        app.logger.exception("n8n connection error")
+
+        return jsonify({
+            "error": "Unable to connect to AI assistant"
+        }), 502
+
+    except Exception as e:
+        app.logger.exception("Chatbot error")
+
+        return jsonify({
+            "error": "Something went wrong"
+        }), 500
+
+
+
+
 
 @app.route("/add-products", methods=["POST"])
 def add_product():
@@ -154,6 +228,7 @@ def delete_product(product_id):
 #     }
 
 @app.route("/orders", methods=["POST"])
+@jwt_required()
 def create_order():
   user_id = get_jwt_identity()  # Get the user ID from the JWT token
   data =  request.get_json()
@@ -500,4 +575,6 @@ def get_recommendations():
 
 
 if __name__ == "__main__":
-  app.run(debug=True)
+  print(app.url_map)
+  app.run(debug=False)
+

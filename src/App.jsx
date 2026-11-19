@@ -3,7 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import Profile from "./pages/profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+import Chatbot from "./components/Chatbot";
 import Navbar from "./components/Navbar";
+
+import SalesForecast from "./components/SalesForecast";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -124,9 +127,9 @@ function App() {
                 <Route
                     path="/my-orders"
                     element={
-                        <protectedRoute>
+                        <ProtectedRoute>
                             <MyOrders/>
-                        </protectedRoute>
+                        </ProtectedRoute>
                     }
                 />
                 <Route
@@ -137,7 +140,19 @@ function App() {
                      />}
                 />
                 
+                <Route
+                    path="/sales-forecast"
+                    element={
+                        <AdminRoute>
+                            <SalesForecast/>
+                        </AdminRoute>
+                    }
+                />
+
             </Routes>
+
+                
+            <Chatbot/>
         </>
     );
 }
