@@ -22,6 +22,15 @@ function SalesForecast() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+
+    return {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+    };
+};
+
     // Fetch future predictions
     const fetchForecast = async (selectedDays) => {
 
@@ -30,7 +39,11 @@ function SalesForecast() {
             setError("");
 
             const response = await fetch(
-                `http://127.0.0.1:5000/api/forecast?days=${selectedDays}`
+                `http://127.0.0.1:5000/api/forecast?days=${selectedDays}`,
+                {
+                    method: "GET",
+                    headers: getAuthHeaders()
+                }
             );
 
             const data = await response.json();
@@ -55,7 +68,11 @@ function SalesForecast() {
 
         try {
             const response = await fetch(
-                "http://127.0.0.1:5000/api/forecast/history"
+                "http://127.0.0.1:5000/api/forecast/history",
+                {
+                    method:"GET",
+                    headers:getAuthHeaders()
+                }
             );
 
             const data = await response.json();

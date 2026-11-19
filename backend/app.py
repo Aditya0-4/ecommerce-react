@@ -9,7 +9,10 @@ from datetime import timedelta
 from datetime import datetime, timezone
 from recommender import recommend_products
 from forecasting import forecast_bp
+from bson import ObjectId
+from bson.errors import InvalidId
 app = Flask(__name__)
+
 
 app.register_blueprint(forecast_bp)
 
@@ -296,6 +299,57 @@ def get_my_orders():
         return jsonify({
             "error": "Unable to fetch your orders"
         }), 500
+    
+
+@app.route("/update-orders", methods=["POST"])
+@jwt_required()
+def update_orders():
+
+    data = request.get_json()
+
+    if not data:
+        return {"error": "Request body required"}, 400
+
+    order_id = data.get("order_id")
+    order_status = data.get("order_status")
+
+    if not order_id:
+        return {"error": "order_id required"}, 400
+
+    if not order_status:
+        return {"error": "order_status required"}, 400
+
+    allowed_statuses = [
+        "pending",
+        "processing",
+        "shipped",
+        "delivered",
+        "cancelled"
+    ]
+
+    if order_status not in allowed_statuses:
+        return {"error": "Invalid order status"}, 400
+
+    try:
+        object_id = ObjectId(order_id)
+    except InvalidId:
+        return {"error": "Invalid order ID"}, 400
+
+    result = db.orders.update_one(
+        {"_id": object_id},
+        {"$set": {"order_status": order_status}}
+    )
+
+    if result.matched_count == 0:
+        return {"error": "Order not found"}, 404
+
+    return {
+        "success": True,
+        "message": "Order status updated successfully",
+        "order_id": order_id,
+        "order_status": order_status
+    }, 200
+
 
 
 @app.route("/register", methods=["POST"])
@@ -575,6 +629,5 @@ def get_recommendations():
 
 
 if __name__ == "__main__":
-  print(app.url_map)
   app.run(debug=False)
 
