@@ -69,13 +69,20 @@ def test_db():
 
 
 # n8n Chatbot Webhook
-N8N_CHAT_URL = "https://aditya-01.app.n8n.cloud/webhook/a8b6116d-0fc6-40a7-a0ce-811ef71cf943/chat"
+N8N_PRODUCT_URL = "https://aditya-01.app.n8n.cloud/webhook/a8b6116d-0fc6-40a7-a0ce-811ef71cf943/chat"
+N8N_SUPPORT_URL = "https://aditya-01.app.n8n.cloud/webhook/cfe6bf37-bb41-40d2-8cb2-492e2264dde4/chat"
+
 
 
 @app.route("/chat", methods=["POST"])
+@jwt_required()
 def chat():
     try:
+        print("\n========== CHAT REQUEST RECEIVED ==========")
+
+        # 1. Receive data from React
         data = request.get_json(silent=True)
+        print("REQUEST DATA:", data)
 
         if not data:
             return jsonify({
@@ -84,30 +91,94 @@ def chat():
 
         chat_input = data.get("chatInput")
         session_id = data.get("sessionId")
+
+        # 2. Get customer's JWT token
         customer_token = request.headers.get("Authorization")
+
+        print("CUSTOMER TOKEN RECEIVED:", bool(customer_token))
 
         if not chat_input or not session_id:
             return jsonify({
                 "error": "chatInput and sessionId are required"
             }), 400
 
-        # Forward the customer's message to n8n
-        n8n_response = requests.post(
-            N8N_CHAT_URL,
-            json={
-                "chatInput": chat_input,
-                "sessionId": session_id
-            },
-            headers={
-               "X-Customer-Authorization":customer_token
-            } if customer_token else{},
-            timeout=60
+        # 3. Identify customer support intent
+        message = chat_input.lower()
+
+        support_keywords = [
+            "order",
+            "orders",
+            "delivery",
+            "shipment",
+            "tracking",
+            "refund",
+            "cancel",
+            "my purchase"
+        ]
+
+        is_support = any(
+            keyword in message for keyword in support_keywords
         )
 
-        print("N8N STATUS:", n8n_response.status_code)
-        print("N8N RESPONSE:", n8n_response.text)
+        # 4. Select appropriate n8n workflow
+        if is_support:
+            n8n_url = N8N_SUPPORT_URL
+            print("Routing to Customer Support Agent")
+        else:
+            n8n_url = N8N_PRODUCT_URL
+            print("Routing to Product Assistant")
 
-        # Return n8n's response to React
+        print("SELECTED N8N URL:", n8n_url)
+        print("SUPPORT INTENT:", is_support)
+
+        # 5. Prepare request for n8n
+        n8n_payload = {
+        "chatInput": chat_input,
+        "sessionId": session_id,
+        "metadata": {
+        "customerAuthorization": customer_token
+         }
+        }
+
+        n8n_headers = {}
+
+        if customer_token:
+            n8n_headers["X-Customer-Authorization"] = customer_token
+
+        print("\n========== SENDING REQUEST TO N8N ==========")
+        print("PAYLOAD:", n8n_payload)
+        print("JWT FORWARDED:", bool(customer_token))
+
+        # 6. Send request to n8n
+        try:
+            n8n_response = requests.post(
+                n8n_url,
+                json=n8n_payload,
+                headers=n8n_headers,
+                timeout=60
+            )
+
+            print("\n========== N8N RESPONSE RECEIVED ==========")
+            print("N8N STATUS:", n8n_response.status_code)
+            print("N8N RESPONSE:", n8n_response.text)
+
+        except requests.exceptions.Timeout:
+            print("ERROR: N8N REQUEST TIMED OUT")
+
+            return jsonify({
+                "error": "The AI assistant took too long to respond"
+            }), 504
+
+        except requests.exceptions.RequestException as e:
+            print("ERROR CONNECTING TO N8N:", repr(e))
+
+            return jsonify({
+                "error": "Unable to connect to AI assistant"
+            }), 502
+
+        # 7. Forward n8n response to React
+        print("\n========== SENDING RESPONSE TO REACT ==========")
+
         return Response(
             n8n_response.content,
             status=n8n_response.status_code,
@@ -117,25 +188,12 @@ def chat():
             )
         )
 
-    except requests.exceptions.Timeout:
-        return jsonify({
-            "error": "The AI assistant took too long to respond"
-        }), 504
-
-    except requests.exceptions.RequestException as e:
-        app.logger.exception("n8n connection error")
-
-        return jsonify({
-            "error": "Unable to connect to AI assistant"
-        }), 502
-
-    except Exception as e:
+    except Exception:
         app.logger.exception("Chatbot error")
 
         return jsonify({
             "error": "Something went wrong"
         }), 500
-
 
 
 
