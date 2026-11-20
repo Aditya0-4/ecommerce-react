@@ -84,6 +84,7 @@ def chat():
 
         chat_input = data.get("chatInput")
         session_id = data.get("sessionId")
+        customer_token = request.headers.get("Authorization")
 
         if not chat_input or not session_id:
             return jsonify({
@@ -97,6 +98,9 @@ def chat():
                 "chatInput": chat_input,
                 "sessionId": session_id
             },
+            headers={
+               "X-Customer-Authorization":customer_token
+            } if customer_token else{},
             timeout=60
         )
 
@@ -302,7 +306,7 @@ def get_my_orders():
                 "id": str(order["_id"]),
                 "items": order.get("items", []),
                 "totalamount": order.get("totalamount", 0),
-                "status": order.get("status", "Pending"),
+                "status": order.get("order_status", "Pending"),
                 "created_at": (
                     created_at.isoformat()
                     if created_at else None

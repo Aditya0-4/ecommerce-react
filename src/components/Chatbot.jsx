@@ -9,6 +9,8 @@ function Chatbot() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -57,10 +59,13 @@ function Chatbot() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(token && {
+            "Authorization":`Bearer ${token}`
+          })
         },
         body: JSON.stringify({
           chatInput: userMessage,
-          sessionId: sessionId,
+          sessionId: sessionId
         }),
       });
 
