@@ -348,7 +348,7 @@ def get_my_orders():
         # Identify the logged-in customer
         user_id = get_jwt_identity()
 
-        # Fetch only this customer's orders
+        # Fetch this customer's orders
         orders = list(
             db.orders.find(
                 {"user_id": user_id}
@@ -358,28 +358,35 @@ def get_my_orders():
         result = []
 
         for order in orders:
+
+            # Get actual order status
+            status = str(
+                order.get("order_status", "Pending")
+            ).strip()
+
+            # Skip cancelled orders (case-insensitive)
+            if status.lower() == "cancelled":
+                continue
+
             created_at = order.get("created_at")
 
             result.append({
                 "id": str(order["_id"]),
                 "items": order.get("items", []),
                 "totalamount": order.get("totalamount", 0),
-                "status": order.get("order_status", "Pending"),
+                "status": status,
                 "created_at": (
                     created_at.isoformat()
                     if created_at else None
                 )
             })
 
-        # Always return a valid JSON response
         return jsonify(result), 200
 
     except Exception as e:
-        print("My Orders Error:", str(e))
-        return jsonify({
-            "error": "Unable to fetch your orders"
-        }), 500
-    
+        print("Get my orders error:", str(e))
+        return jsonify({"error": "Unable to retrieve orders"}), 500
+
 
 @app.route("/update-orders", methods=["POST"])
 @jwt_required()
@@ -429,6 +436,95 @@ def update_orders():
         "order_id": order_id,
         "order_status": order_status
     }, 200
+
+
+@app.route("/cancel-orders",methods=["POST"])
+@jwt_required()
+def cancel_order():
+   try:
+      user_id = get_jwt_identity()
+
+      data = request.get_json()
+
+      if not data or not data.get("order_id"):
+         return jsonify({
+            "success":False,
+            "message":"Order Id is required"
+         }),400
+
+      order_id = data.get("order_id")
+
+      # validate mongodb objectId
+      try:
+         order_object_id = ObjectId(order_id)
+      except (InvalidId,TypeError):
+         return jsonify({
+            "success":False,
+            "message":"Invalid order ID"
+         }),400
+
+      # Find order belonging to this customer
+      order = db.orders.find_one({
+         "_id":order_object_id,
+         "user_id":user_id
+      })
+
+      if not order:
+         return jsonify({
+            "success":False,
+            "message":"Order not found"
+         }),404
+
+      #check current order status
+      current_status = order.get(
+         "order_status","pending"
+      ).strip().lower()
+
+      allowed_status = ["pending","processing"]
+
+      if current_status == "cancelled":
+         return jsonify({
+            "success":False,
+            "message":"This order is laready cancelled"
+         }),400
+
+      if current_status not in allowed_status:
+         return jsonify({
+            "success":False,
+            "message":f"Order cannot be cancelled because its status is {current_status}"
+         }),400
+
+      #update order instead of deleting it
+      cancellation_time = datetime.now(timezone.utc)
+      db.orders.update_one({
+         "_id":order_object_id,
+         "user_id":user_id,
+         "order_status":order.get("order_status")
+      },
+      {
+         "$set":{
+            "order_status":"cancelled",
+            "cancelled_at":cancellation_time
+         }
+      })
+
+      #return success response
+      return jsonify({
+         "success":True,
+         "message":"Order cancelled successfully",
+         "order_id":order_id,
+         "order_status":"cancelled",
+         "cancelled_at":cancellation_time.isoformat()
+      }),200
+
+   except Exception:
+      app.logger.exception("Order cancellation error")
+
+      return jsonify({
+         "success":False,
+         "message":"something went wrong while cancelling the order"
+      }),500
+         
 
 
 

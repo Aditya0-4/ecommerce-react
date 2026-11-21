@@ -155,3 +155,28 @@
         padding: 18px;
     }
 }
+.order-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cancel-order-btn {
+    padding: 9px 16px;
+    background: transparent;
+    color: #b44235;
+    border: 1px solid #b44235;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.cancel-order-btn:hover {
+    background: #b44235;
+    color: white;
+}
+
+.cancel-order-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

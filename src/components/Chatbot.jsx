@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 
-const CHAT_URL = "http://localhost:5000/chat";;
+const CHAT_URL = "http://localhost:5000/chat";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +32,7 @@ function Chatbot() {
     return id;
   });
 
-  // Automatically scroll to the latest message
+  // Automatically scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -60,12 +60,12 @@ function Chatbot() {
         headers: {
           "Content-Type": "application/json",
           ...(token && {
-            "Authorization":`Bearer ${token}`
-          })
+            Authorization: `Bearer ${token}`,
+          }),
         },
         body: JSON.stringify({
           chatInput: userMessage,
-          sessionId: sessionId
+          sessionId: sessionId,
         }),
       });
 
@@ -75,7 +75,7 @@ function Chatbot() {
 
       const data = await response.json();
 
-      // Extract the AI response
+      // Extract AI response
       const botReply =
         data.output ||
         data.text ||
@@ -83,15 +83,32 @@ function Chatbot() {
         data.message ||
         "Sorry, I couldn't generate a response.";
 
+      const replyText =
+        typeof botReply === "string"
+          ? botReply
+          : JSON.stringify(botReply);
+
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          text: typeof botReply === "string"
-            ? botReply
-            : JSON.stringify(botReply),
+          text: replyText,
         },
       ]);
+
+      // Detect an explicitly successful cancellation
+      const cancellationSucceeded =
+        /(?:order|cancellation).{0,50}(?:cancelled successfully|successfully cancelled|cancellation successful)|(?:cancelled successfully|successfully cancelled)/i.test(
+          replyText
+        );
+
+      // Notify My Orders component
+      if (cancellationSucceeded) {
+        window.dispatchEvent(
+          new Event("ordersUpdated")
+        );
+      }
+
     } catch (error) {
       console.error("Chatbot error:", error);
 
@@ -99,7 +116,7 @@ function Chatbot() {
         ...prev,
         {
           role: "assistant",
-          text: "Sorry! Something went wrong. Please try again.",
+          text: "Please Login/SignUp to Cosmo Roots account first to access Chatbot help!!.",
         },
       ]);
     } finally {
